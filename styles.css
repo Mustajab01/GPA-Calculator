@@ -67,14 +67,73 @@ button:hover {
 }
 
 #result {
-    margin-top: 30px;
+    margin-bottom: 20px;
     font-size: 24px;
     font-weight: bold;
     color: #3498db;
-    position: relative;
+    color: #4c4c4c;
 }
 
 .gpa {
     font-weight: bold;
     color: #27ae60;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    input[type="number"] {
+        width: calc(75% - 24px);
+        padding: 10px;
+    }
+
+    #courseScores input {
+        width: calc(60% - 24px);
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    #result {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    input[type="number"] {
+        width: calc(80% - 16px);
+        padding: 8px;
+        margin-bottom: 15px;
+    }
+
+    #courseScores input {
+        width: calc(60% - 16px);
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    #result {
+        font-size: 18px;
+    }
 }

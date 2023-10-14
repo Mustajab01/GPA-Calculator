@@ -10,8 +10,12 @@ function createScoreInputs(numCourses) {
         input.max = "100";
         input.placeholder = "Enter score";
         input.id = `course${i}`;
+        let gpaDisplay = document.createElement("span");
+        gpaDisplay.id = `gpa${i}`;
+        gpaDisplay.className = "gpa";
         coursesDiv.appendChild(label);
         coursesDiv.appendChild(input);
+        coursesDiv.appendChild(gpaDisplay);
         coursesDiv.appendChild(document.createElement("br"));
     }
 }
@@ -22,17 +26,22 @@ function calculateGPA() {
     let totalGPA = 0;
     let totalCourses = 0;
     for (let i = 1; i <= numCourses; i++) {
-        let score = parseFloat(document.getElementById(`course${i}`).value);
+        let scoreInput = document.getElementById(`course${i}`);
+        let gpaDisplay = document.getElementById(`gpa${i}`);
+        let score = parseFloat(scoreInput.value);
         if (!isNaN(score) && score >= 0 && score <= 100) {
             totalScore += score;
-            totalGPA += calculateGPAFromScore(score);
             totalCourses++;
+            let courseGPA = calculateGPAFromScore(score);
+            totalGPA += courseGPA;
+            gpaDisplay.textContent = ` (GPA: ${courseGPA.toFixed(2)})`;
+        } else {
+            gpaDisplay.textContent = "";
         }
     }
     if (totalCourses > 0) {
-        let averageScore = totalScore / totalCourses;
         let averageGPA = totalGPA / totalCourses;
-        document.getElementById("result").innerHTML = `Your GPA is: ${averageGPA.toFixed(2)}`;
+        document.getElementById("result").innerHTML = `Your Average GPA is: ${averageGPA.toFixed(2)}`;
     } else {
         document.getElementById("result").innerHTML = "Please enter valid scores.";
     }

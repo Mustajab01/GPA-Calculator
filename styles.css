@@ -21,7 +21,7 @@ body {
     min-height: 300px;
     transition: all 0.3s ease;
     max-height: 80vh; 
-    overflow-y: auto; /* Enable vertical scrolling if the content overflows */
+    overflow-y: hidden;
     padding: 20px;
 }
 
@@ -51,6 +51,10 @@ input[type="number"]:focus {
     border-color: #3498db;
 }
 
+#courseScores {
+    max-height: 300px; /* Set the maximum height for the scores input area */
+    overflow-y: auto; /* Enable vertical scrolling if the content overflows */
+}
 #courseScores input {
     width: calc(70% - 20px);
 }
@@ -59,6 +63,7 @@ button {
     background-color: #3498db;
     color: #fff;
     border: none;
+    margin: 1rem auto;
     padding: 12px 24px;
     cursor: pointer;
     border-radius: 5px;
@@ -74,7 +79,6 @@ button:hover {
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: bold;
-    color: #3498db;
     color: #4c4c4c;
 }
 
@@ -83,7 +87,6 @@ button:hover {
     color: #27ae60;
 }
 #credentials {
-    margin-top: 20px;
     font-size: 14px;
     color: #888;
     text-align: center;

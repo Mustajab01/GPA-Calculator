@@ -51,13 +51,13 @@ function calculateGPAFromScore(score) {
         return 3.8;
     } else if (score >= 75) {
         return 3.4;
-    } else if (score >= 70) {
-        return 3;
+    } else if (score >= 71) {
+        return 3.0;
     } else if (score >= 68) {
         return 2.8;
     } else if (score >= 64) {
         return 2.4;
-    } else if (score >= 60) {
+    } else if (score >= 61) {
         return 2.0;
     } else if (score >= 57) {
         return 1.8;
@@ -65,11 +65,11 @@ function calculateGPAFromScore(score) {
         return 1.4;
     } else if (score >= 50) {
         return 1.0;
-    } 
-    else {
+    } else {
         return 0.0;
     }
 }
+
 
 document.getElementById("numCourses").addEventListener("input", function() {
     let numCourses = parseInt(this.value);

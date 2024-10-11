@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import Semester from './components/Semester';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+    const [semesters, setSemesters] = useState([{ id: 1 }]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    const addSemester = () => {
+        setSemesters([...semesters, { id: semesters.length + 1 }]);
+    };
 
-export default App
+    const removeSemester = (id) => {
+        setSemesters(semesters.filter((semester) => semester.id !== id));
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-100 p-8">
+            <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+                <h1 className="text-3xl font-bold mb-6 text-center">CGPA Calculator</h1>
+                <button
+                    onClick={addSemester}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mb-4"
+                >
+                    Add Semester
+                </button>
+                {semesters.map((semester) => (
+                    <Semester
+                        key={semester.id}
+                        id={semester.id}
+                        removeSemester={removeSemester}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default App;

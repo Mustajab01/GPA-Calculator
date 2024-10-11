@@ -1,30 +1,25 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import React from 'react';
 
-const CourseInput = ({ id, updateScore, removeCourse }) => {
-    const [score, setScore] = useState('');
-
+const CourseInput = ({ id, score, updateScore }) => {
     const handleInputChange = (e) => {
         const value = e.target.value;
-        setScore(value);
-        updateScore(id, value);
+        if (value === '' || (parseInt(value) >= 0 && parseInt(value) <= 100)) {
+            updateScore(id, value);
+        }
     };
 
     return (
-        <div className="flex items-center space-x-4 mb-2">
-            <input
-                type="number"
-                value={score}
-                onChange={handleInputChange}
-                placeholder={`Course ${id} Score (1-100)`}
-                className="p-2 border rounded-lg w-full"
-            />
-            <button
-                onClick={() => removeCourse(id)}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-            >
-                Remove
-            </button>
-        </div>
+        <input
+            type="number"
+            value={score}
+            onChange={handleInputChange}
+            placeholder="Score (0-100)"
+            min={0}
+            max={100}
+            className="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-200 transition duration-300 w-full md:w-auto"
+        />
     );
 };
 

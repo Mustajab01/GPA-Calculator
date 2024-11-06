@@ -101,7 +101,7 @@ const App = () => {
     };
 
     return (
-        <Router>
+        <Router basename="/GPA-Calculator">
             <div className="flex flex-col h-screen bg-gray-100">
                 <Navbar exportData={exportData} toggleSidebar={toggleSidebar} />
                 <div className="flex flex-1 overflow-hidden">

@@ -1,8 +1,9 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 
 const Sidebar = ({ semesters, selectedSemester, setSelectedSemester, addSemester, removeSemester, calculateCGPA, isOpen, toggleSidebar }) => {
+    const navigate = useNavigate();
     return (
         <aside className={`
             fixed inset-y-0 left-0 z-50 w-64 bg-gray-800 text-white p-4 overflow-y-auto transition-transform duration-300 ease-in-out transform
@@ -33,6 +34,7 @@ const Sidebar = ({ semesters, selectedSemester, setSelectedSemester, addSemester
                         }`}
                         onClick={() => {
                             setSelectedSemester(semester.id);
+                            navigate('/');
                             if (window.innerWidth < 768) {
                                 toggleSidebar();
                             }

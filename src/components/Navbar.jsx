@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
@@ -23,7 +21,7 @@ const Navbar = ({ exportData, toggleSidebar }) => {
                     onClick={exportData}
                     className="bg-white text-blue-800 px-4 py-2 rounded-full hover:bg-blue-100 transition duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 text-sm md:text-base"
                 >
-                    Export Data
+                    Export CSV
                 </button>
             </div>
         </nav>

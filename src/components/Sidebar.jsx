@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Sidebar = ({ semesters, selectedSemester, setSelectedSemester, addSemester, removeSemester, calculateCGPA, isOpen, toggleSidebar }) => {
     return (
@@ -15,6 +14,14 @@ const Sidebar = ({ semesters, selectedSemester, setSelectedSemester, addSemester
                 <button onClick={toggleSidebar} className="text-white md:hidden">
                     <X size={24} />
                 </button>
+            </div>
+            <div className="mb-4">
+                <Link
+                    to="/gpa-table"
+                    className="block bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300"
+                >
+                    GPA Calculation Table
+                </Link>
             </div>
             <h2 className="text-xl font-bold mb-4">Semesters</h2>
             <ul className="space-y-2">

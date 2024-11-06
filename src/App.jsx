@@ -1,21 +1,38 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import * as XLSX from 'xlsx';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import SemesterContent from './components/SemesterContent';
+import GpaTable from './components/GpaTable';
 
+const APP_KEY = 'gpa-app-data';
 const App = () => {
-    const [semesters, setSemesters] = useState([
-        { 
-            id: 1, 
-            name: 'Semester 1', 
-            gpa: 0,
-            courses: [{ id: 1, name: 'Course 1', score: '' }]
-        }
-    ]);
-    const [selectedSemester, setSelectedSemester] = useState(1);
+    const [semesters, setSemesters] = useState([]);
+    const [selectedSemester, setSelectedSemester] = useState(null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const isMounted = useRef(false);
+
+    useEffect(() => {
+        // Load data from localStorage on initial render
+        const storedData = localStorage.getItem(APP_KEY);
+        if (storedData) {
+            const { semesters: storedSemesters, selectedSemester: storedSelectedSemester } = JSON.parse(storedData);
+            setSemesters(storedSemesters);
+            setSelectedSemester(storedSelectedSemester);
+        }
+    }, []);
+
+    useEffect(() => {
+        // Save data to localStorage whenever semesters or selectedSemester changes
+        if (isMounted.current) {
+            localStorage.setItem(APP_KEY, JSON.stringify({ semesters, selectedSemester }));            
+        }
+        else {
+            isMounted.current = true;
+          }
+        
+    }, [semesters, selectedSemester]);
 
     const addSemester = () => {
         if (semesters.length < 8) {
@@ -55,12 +72,25 @@ const App = () => {
     };
 
     const exportData = () => {
-        const data = JSON.stringify(semesters, null, 2);
-        const blob = new Blob([data], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
+        const workbook = XLSX.utils.book_new();
+
+        semesters.forEach((semester) => {
+            const worksheet = XLSX.utils.json_to_sheet([
+                { Name: semester.name, GPA: semester.gpa.toFixed(2) },
+                ...semester.courses.map((course) => ({
+                    Course: course.name,
+                    Score: course.score || '',
+                })),
+            ]);
+            XLSX.utils.book_append_sheet(workbook, worksheet, semester.name);
+        });
+
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(data);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'gpa_data.json';
+        link.setAttribute('download', 'gpa_data.xlsx');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -100,6 +130,7 @@ const App = () => {
                                     </div>
                                 )
                             } />
+                            <Route path="/gpa-table" element={<GpaTable />} />
                         </Routes>
                     </main>
                 </div>

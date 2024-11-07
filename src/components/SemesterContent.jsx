@@ -6,14 +6,20 @@ const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses })
         if (semester.courses.length < 7) {
             const newCourses = [
                 ...semester.courses, 
-                { id: semester.courses.length + 1, name: `Course ${semester.courses.length + 1}`, score: '' }
+                { id: Math.max(...semester.courses.map(c => c.id), 0) + 1, name: `Course ${semester.courses.length + 1}`, score: '' }
             ];
             updateSemesterCourses(semester.id, newCourses);
         }
     };
 
     const removeCourse = (id) => {
-        const newCourses = semester.courses.filter((course) => course.id !== id);
+        const newCourses = semester.courses
+            .filter((course) => course.id !== id)
+            .map((course, index) => ({
+                ...course,
+                id: index + 1,
+                name: `Course ${index + 1}`
+            }));
         updateSemesterCourses(semester.id, newCourses);
     };
 
@@ -48,12 +54,10 @@ const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses })
 
     React.useEffect(() => {
         const gpa = calculateGPA();
-        // Only update GPA if it has changed to prevent unnecessary renders
         if (gpa !== semester.gpa) {
             updateSemesterGPA(semester.id, gpa);
         }
     }, [semester, updateSemesterGPA, calculateGPA]);
-
 
     return (
         <div className="bg-white rounded-lg shadow p-4 md:p-6 max-w-3xl mx-auto">

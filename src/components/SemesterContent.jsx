@@ -13,6 +13,11 @@ const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses })
     };
 
     const removeCourse = (id) => {
+        if (semester.courses.length <= 6) {
+            alert('Each semester must have at least 6 courses.');
+            return;
+        }
+        
         const newCourses = semester.courses
             .filter((course) => course.id !== id)
             .map((course, index) => ({
@@ -77,6 +82,7 @@ const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses })
                         <button
                             onClick={() => removeCourse(course.id)}
                             className="text-red-500 hover:text-red-700 transition duration-300"
+                            disabled={semester.courses.length <= 6}
                         >
                             Remove
                         </button>

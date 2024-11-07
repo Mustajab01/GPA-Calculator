@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
@@ -7,6 +7,14 @@ import SemesterContent from './components/SemesterContent';
 import GpaTable from './components/GpaTable';
 
 const APP_KEY = 'gpa-app-data';
+
+const createDefaultCourses = () => {
+    return Array.from({ length: 6 }, (_, index) => ({
+        id: index + 1,
+        name: `Course ${index + 1}`,
+        score: ''
+    }));
+};
 
 const App = () => {
     const [semesters, setSemesters] = useState([]);
@@ -42,7 +50,7 @@ const App = () => {
                 id: Math.max(...semesters.map(sem => sem.id), 0) + 1,
                 name: `Semester ${semesters.length + 1}`,
                 gpa: 0,
-                courses: [{ id: 1, name: 'Course 1', score: '' }]
+                courses: createDefaultCourses()
             };
             setSemesters([...semesters, newSemester]);
             setSelectedSemester(newSemester.id);

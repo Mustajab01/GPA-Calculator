@@ -1,31 +1,46 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Download, GraduationCap, Menu } from 'lucide-react';
 
-const Navbar = ({ exportData, toggleSidebar }) => {
+const Navbar = ({ exportData, toggleSidebar, calculateCGPA }) => {
     return (
-        <nav className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 shadow-md">
-            <div className="max-w-7xl mx-auto flex justify-between items-center">
-                <div className="flex items-center">
+        <nav className="bg-gradient-to-r from-indigo-600 to-violet-600 p-4">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+                <div className="flex items-center gap-3">
                     <button
                         onClick={toggleSidebar}
-                        className="text-white mr-4 focus:outline-none md:hidden"
+                        className="text-white focus:outline-none md:hidden hover:bg-white/20 p-2 rounded-lg transition"
                     >
                         <Menu size={24} />
                     </button>
-                    <Link to="/" className="text-white text-2xl font-bold hover:text-blue-200 transition duration-300">
-                        GPA Calculator
+                    <Link to="/" className="hidden md:flex items-center gap-2 text-white text-xl font-bold hover:text-white/90 transition">
+                        <GraduationCap size={28} />
+                        <span>GPA Calculator</span>
                     </Link>
                 </div>
-                <button
-                    onClick={exportData}
-                    className="bg-white text-blue-800 px-4 py-2 rounded-full hover:bg-blue-100 transition duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 text-sm md:text-base"
-                >
-                    Export CSV
-                </button>
+
+                <div className="flex items-center gap-4">
+                    <div className="bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm">
+                        <p className="text-white font-medium">
+                            CGPA: <span className="text-xl font-bold">{calculateCGPA()}</span>
+                        </p>
+                    </div>
+                    <button
+                        onClick={exportData}
+                        className="hidden md:flex items-center gap-2 bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition font-medium"
+                    >
+                        <Download size={20} />
+                        Export
+                    </button>
+                </div>
             </div>
         </nav>
     );
 };
 
 export default Navbar;
+Navbar.propTypes = {
+    exportData: PropTypes.any,
+    toggleSidebar: PropTypes.any,
+    calculateCGPA: PropTypes.any,
+}

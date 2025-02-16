@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import * as XLSX from 'xlsx';
+import GpaTable from './components/GpaTable';
+import { GraduationCap, PlusCircle } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import SemesterContent from './components/SemesterContent';
-import GpaTable from './components/GpaTable';
 
 const APP_KEY = 'gpa-app-data';
 
@@ -23,12 +24,10 @@ const App = () => {
     const isMounted = useRef(false);
 
     useEffect(() => {
-        // Load data from localStorage on initial render
         const storedData = localStorage.getItem(APP_KEY);
         if (storedData) {
             const { semesters: storedSemesters, selectedSemester: storedSelectedSemester } = JSON.parse(storedData);
             setSemesters(storedSemesters);
-            // Only set selected semester if it exists in the loaded semesters
             if (storedSelectedSemester && storedSemesters.some(sem => sem.id === storedSelectedSemester)) {
                 setSelectedSemester(storedSelectedSemester);
             }
@@ -36,7 +35,6 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        // Save data to localStorage whenever semesters or selectedSemester changes
         if (isMounted.current) {
             localStorage.setItem(APP_KEY, JSON.stringify({ semesters, selectedSemester }));
         } else {
@@ -61,13 +59,10 @@ const App = () => {
         const updatedSemesters = semesters.filter((semester) => semester.id !== id);
         setSemesters(updatedSemesters);
 
-        // Handle selected semester after removal
         if (selectedSemester === id) {
-            // If there are remaining semesters, select the last one
             if (updatedSemesters.length > 0) {
                 setSelectedSemester(updatedSemesters[updatedSemesters.length - 1].id);
             } else {
-                // If no semesters remain, clear the selection
                 setSelectedSemester(null);
             }
         }
@@ -125,10 +120,40 @@ const App = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+    const WelcomeScreen = () => (
+        <div className="flex flex-col items-center justify-center h-full text-center p-6">
+            <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+                <div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <GraduationCap size={32} className="text-white" />
+                </div>
+
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-transparent bg-clip-text mb-4">
+                    Welcome to GPA Calculator
+                </h2>
+
+                <p className="text-gray-600 mb-8">
+                    Track your academic progress with ease. Get started by adding your first semester.
+                </p>
+
+                <button
+                    onClick={addSemester}
+                    className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white p-3 rounded-lg hover:opacity-90 transition font-medium"
+                >
+                    <PlusCircle size={20} />
+                    Add Your First Semester
+                </button>
+            </div>
+        </div>
+    );
+
     return (
         <Router basename="/GPA-Calculator">
-            <div className="flex flex-col h-screen bg-gray-100">
-                <Navbar exportData={exportData} toggleSidebar={toggleSidebar} />
+            <div className="flex flex-col h-screen bg-gray-50">
+                <Navbar
+                    exportData={exportData}
+                    toggleSidebar={toggleSidebar}
+                    calculateCGPA={calculateCGPA}
+                />
                 <div className="flex flex-1 overflow-hidden">
                     <Sidebar
                         semesters={semesters}
@@ -140,32 +165,20 @@ const App = () => {
                         isOpen={isSidebarOpen}
                         toggleSidebar={toggleSidebar}
                     />
-                    <main className="flex-1 overflow-y-auto p-4 transition-all duration-300 ease-in-out">
+                    <main className="flex-1 overflow-y-auto p-4 md:p-6 transition-all duration-300">
                         <Routes>
-                            <Route path="/" element={
-                                selectedSemester ? (
+                            <Route
+                                path="/"
+                                element={selectedSemester ? (
                                     <SemesterContent
                                         semester={semesters.find(sem => sem.id === selectedSemester)}
                                         updateSemesterGPA={updateSemesterGPA}
                                         updateSemesterCourses={updateSemesterCourses}
                                     />
                                 ) : (
-                                    <div className="flex flex-col items-center justify-center h-full text-center p-4">
-                                        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                                            Welcome to GPA Calculator
-                                        </h2>
-                                        <p className="text-gray-600 mb-6 max-w-md">
-                                            Get started by adding your first semester using the "Add Semester" button in the sidebar.
-                                        </p>
-                                        <button
-                                            onClick={addSemester}
-                                            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-                                        >
-                                            Add Your First Semester
-                                        </button>
-                                    </div>
-                                )
-                            } />
+                                    <WelcomeScreen />
+                                )}
+                            />
                             <Route path="/gpa-table" element={<GpaTable />} />
                         </Routes>
                     </main>

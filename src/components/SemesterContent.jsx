@@ -1,11 +1,12 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import CourseInput from './CourseInput';
+import { PlusCircle, Trash2 } from 'lucide-react';
 
 const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses }) => {
     const addCourse = () => {
         if (semester.courses.length < 7) {
             const newCourses = [
-                ...semester.courses, 
+                ...semester.courses,
                 { id: Math.max(...semester.courses.map(c => c.id), 0) + 1, name: `Course ${semester.courses.length + 1}`, score: '' }
             ];
             updateSemesterCourses(semester.id, newCourses);
@@ -17,7 +18,7 @@ const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses })
             alert('Each semester must have at least 6 courses.');
             return;
         }
-        
+
         const newCourses = semester.courses
             .filter((course) => course.id !== id)
             .map((course, index) => ({
@@ -29,7 +30,7 @@ const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses })
     };
 
     const updateScore = (id, score) => {
-        const newCourses = semester.courses.map(course => 
+        const newCourses = semester.courses.map(course =>
             course.id === id ? { ...course, score } : course
         );
         updateSemesterCourses(semester.id, newCourses);
@@ -65,35 +66,49 @@ const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses })
     }, [semester, updateSemesterGPA, calculateGPA]);
 
     return (
-        <div className="bg-white rounded-lg shadow p-4 md:p-6 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold mb-4 text-blue-800">{semester.name}</h2>
-            <div className="mb-4 text-lg font-semibold text-gray-700">
-                GPA: {calculateGPA().toFixed(2)}
+        <div className="bg-white rounded-xl shadow-lg p-6 max-w-3xl mx-auto">
+            <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-transparent bg-clip-text">
+                    {semester.name}
+                </h2>
+                <div className="bg-indigo-50 px-4 py-2 rounded-lg">
+                    <span className="text-indigo-600 font-medium">
+                        GPA: <span className="text-xl font-bold">{semester.gpa.toFixed(2)}</span>
+                    </span>
+                </div>
             </div>
+
             <div className="space-y-4 mb-6">
                 {semester.courses.map((course) => (
-                    <div key={course.id} className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
-                        <span className="w-full md:w-24 font-medium text-gray-600">{course.name}</span>
-                        <CourseInput
-                            id={course.id}
-                            score={course.score}
-                            updateScore={updateScore}
+                    <div key={course.id} className="flex items-center gap-4 p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition">
+                        <span className="font-medium text-gray-700 min-w-[100px]">{course.name}</span>
+                        <input
+                            type="number"
+                            value={course.score}
+                            onChange={(e) => updateScore(course.id, e.target.value)}
+                            placeholder="Score (0-100)"
+                            min={0}
+                            max={100}
+                            className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200 transition"
                         />
-                        <button
-                            onClick={() => removeCourse(course.id)}
-                            className="text-red-500 hover:text-red-700 transition duration-300"
-                            disabled={semester.courses.length <= 6}
-                        >
-                            Remove
-                        </button>
+                        {semester.courses.length > 6 &&
+                            <button
+                                onClick={() => removeCourse(course.id)}
+                                className="text-red-500 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition"
+                                disabled={semester.courses.length <= 6}
+                            >
+                                <Trash2 size={20} />
+                            </button>}
                     </div>
                 ))}
             </div>
+
             <button
                 onClick={addCourse}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full md:w-auto"
                 disabled={semester.courses.length >= 7}
+                className="flex items-center gap-2 w-full justify-center bg-gradient-to-r from-indigo-600 to-violet-600 text-white p-3 rounded-lg hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
+                <PlusCircle size={20} />
                 Add Course
             </button>
         </div>
@@ -101,3 +116,8 @@ const SemesterContent = ({ semester, updateSemesterGPA, updateSemesterCourses })
 };
 
 export default SemesterContent;
+SemesterContent.propTypes = {
+    semester: PropTypes.any,
+    updateSemesterGPA: PropTypes.any,
+    updateSemesterCourses: PropTypes.any,
+}

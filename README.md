@@ -61,7 +61,7 @@ The GPA Calculator is a user-friendly web application that helps students track 
    npm run dev
    ```
 
-2. Open your web browser and navigate to `http://localhost:5173`.
+2. Open your web browser and navigate to `http://localhost:3000`.
 
 ## Usage Guide
 
@@ -72,7 +72,7 @@ The GPA Calculator is a user-friendly web application that helps students track 
 
 ## Technologies Used
 
-- [Vite](https://vite.dev/): A fast build tool that optimizes development with features like hot module replacement.
+- [NextJS](https://nextjs.org/): An open-source web development framework built on React with features like server-side rendering and static site generation, built-in routing and optimizations for better SEO and user experience.
 - [React](https://reactjs.org/): A JavaScript library for building user interfaces.
 - [React Router](https://reactrouter.com/): A routing library for React applications.
 - [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for rapidly building custom designs.
@@ -83,18 +83,18 @@ The GPA Calculator is a user-friendly web application that helps students track 
 Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
 
 1. Fork the repository.
-2. Create a new branch: 
-    ```bash
-    git checkout -b feature/your-feature-name
-    ```
-3. Make your changes and commit them: 
-    ```bash
-    git commit -m 'Add some feature
-    ```
-4. Push to the branch: 
-    ```bash
-    git push origin feature/your-feature-name
-    ```
+2. Create a new branch:
+   ```bash
+   git checkout -b feat/your-feature-name
+   ```
+3. Make your changes and commit them:
+   ```bash
+   git commit -m 'Add some feature
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
 5. Submit a pull request.
 
 ## License
@@ -103,6 +103,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgments
 
+- [NextJS](https://nextjs.org/) an open-source web development framework built on React
 - [Tailwind CSS](https://tailwindcss.com/) for providing a powerful and flexible CSS framework.
 - [SheetJS](https://github.com/SheetJS/sheetjs) for the excellent XLSX library.
 - [Lucide](https://lucide.dev/) for the high-quality open-source icons.

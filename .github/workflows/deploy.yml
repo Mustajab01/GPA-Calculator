@@ -5,31 +5,28 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: "npm"
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build project
-        run: npm run build && npm run export
+      - name: Build and Export Next.js Project
+        run: npm run build
 
-      - name: Upload production-ready build files
+      - name: Upload Production Files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
@@ -39,9 +36,10 @@ jobs:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Download artifact
+      - name: Download Production Files
         uses: actions/download-artifact@v4
         with:
           name: production-files

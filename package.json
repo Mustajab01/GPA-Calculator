@@ -5,7 +5,7 @@
 	"homepage": "https://mustajab01.github.io/GPA-Calculator/",
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build && next export",
+		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
 	},

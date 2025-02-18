@@ -1,10 +1,11 @@
 {
-	"name": "gpa-calculator-nextjs",
-	"version": "0.1.0",
+	"name": "gpa-calculator",
+	"version": "4.0.0",
 	"private": false,
+	"homepage": "https://mustajab01.github.io/GPA-Calculator/",
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build",
+		"build": "next build && next export",
 		"start": "next start",
 		"lint": "next lint"
 	},

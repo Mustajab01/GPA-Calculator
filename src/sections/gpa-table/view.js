@@ -1,7 +1,13 @@
+"use client";
+
+import React, { useContext } from "react";
 import Link from "next/link";
 import { Home, Trophy, Award, School } from "lucide-react";
+import { GpaDataContext } from "@/context/GpaDataContext";
 
 const GpaTableView = () => {
+	const { isSidebarOpen, toggleSidebar } = useContext(GpaDataContext);
+
 	const gradeScores = [
 		{ score: "90-100", gpa: 4.0, gradePoint: "A+" },
 		{ score: "85-89", gpa: 4.0, gradePoint: "A" },
@@ -26,7 +32,12 @@ const GpaTableView = () => {
 	};
 
 	return (
-		<div className="bg-white rounded-xl shadow-lg p-6 md:p-8 max-w-3xl mx-auto">
+		<div
+			className="bg-white rounded-xl shadow-lg p-6 md:p-8 max-w-3xl mx-auto"
+			onClick={() => {
+				if (isSidebarOpen) toggleSidebar();
+			}}
+		>
 			<div className="flex items-center gap-3 mb-8">
 				<div className="w-12 h-12 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg flex items-center justify-center">
 					<Trophy size={24} className="text-white" />

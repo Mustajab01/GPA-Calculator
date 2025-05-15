@@ -6,9 +6,9 @@ import { useContext } from 'react';
 import { GpaDataContext } from '@/context/GpaDataContext';
 
 const Navbar = () => {
-  const { exportData, toggleSidebar, calculateCGPA } = useContext(GpaDataContext)
+  const { exportData, toggleSidebar, calculateCGPA, isSidebarOpen } = useContext(GpaDataContext)
   return (
-    <nav className="bg-gradient-to-r from-indigo-600 to-violet-600 p-4">
+    <nav className="bg-gradient-to-r from-indigo-600 to-violet-600 p-4" onClick={() => { if (isSidebarOpen) toggleSidebar() }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button

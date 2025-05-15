@@ -1,5 +1,5 @@
 import GpaTableView from "@/sections/gpa-table/view";
 
-export default function Home() {
+export default function GpaTablePage() {
 	return <GpaTableView />;
 }

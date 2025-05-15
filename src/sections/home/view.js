@@ -3,16 +3,26 @@
 import { useContext } from "react";
 import { GraduationCap, PlusCircle } from "lucide-react";
 
-import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
 import SemesterContent from "@/components/SemesterContent";
 import { GpaDataContext } from "@/context/GpaDataContext";
 
-const HomeView = () => {
-	const { selectedSemester, addSemester } = useContext(GpaDataContext);
+export default function HomeView() {
+	const { semesters } = useContext(GpaDataContext);
 
-	const WelcomeScreen = () => (
-		<div className="flex flex-col items-center justify-center h-full text-center p-6">
+	return semesters.length > 0 ? <SemesterContent /> : <WelcomeScreen />;
+}
+
+const WelcomeScreen = () => {
+	const { addSemester, isSidebarOpen, toggleSidebar } =
+		useContext(GpaDataContext);
+
+	return (
+		<div
+			className="flex flex-col items-center justify-center h-full text-center p-6"
+			onClick={() => {
+				if (isSidebarOpen) toggleSidebar();
+			}}
+		>
 			<div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
 				<div className="w-16 h-16 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-full flex items-center justify-center mx-auto mb-6">
 					<GraduationCap size={32} className="text-white" />
@@ -37,8 +47,4 @@ const HomeView = () => {
 			</div>
 		</div>
 	);
-
-	return selectedSemester ? <SemesterContent /> : <WelcomeScreen />;
 };
-
-export default HomeView;

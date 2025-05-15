@@ -3,11 +3,13 @@
 import { ChevronRight, GraduationCap, PlusCircle, Trash2, X } from 'lucide-react';
 import Link from 'next/link';
 import { useContext } from 'react';
+import { usePathname } from 'next/navigation';
 import { GpaDataContext } from '@/context/GpaDataContext';
 
 
 const Sidebar = () => {
   const { semesters, selectedSemester, setSelectedSemesterFunc, addSemester, removeSemester, calculateCGPA, isSidebarOpen, toggleSidebar } = useContext(GpaDataContext)
+  const pathname = usePathname();
   return (
     <aside className={`
             fixed inset-y-0 left-0 z-50 w-72 bg-white shadow-xl text-gray-800
@@ -42,58 +44,76 @@ const Sidebar = () => {
       {/* Scrollable Content Section */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-6">
-          <h2 className="text-lg font-bold mb-4">Semesters</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold mb-4">Semesters</h2>
+            <h4 className="text-sm font-medium mb-4 text-gray-400">
+              {semesters.length}/8
+            </h4>
+          </div>
           <div className="space-y-2">
+            {semesters.length > 0 ? (
+              semesters.map((semester) => {
+                const semesterContent = (
+                  <div
 
-            {semesters.map((semester) => (
-              <Link
-                onClick={toggleSidebar}
-                key={semester.id}
-                href="/"
-              >
-
-
-                <div
-
-                  onClick={() => setSelectedSemesterFunc(semester.id)}
-                  className={`
-                                    flex items-center justify-between p-3 rounded-lg cursor-pointer transition
-                                    ${selectedSemester === semester.id
-                      ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white'
-                      : 'hover:bg-gray-100'
-                    }
-                                `}
-                >
-                  <div>
-                    <span className="font-medium">
-                      {semester.name}
-                    </span>
-                    <span className="text-sm opacity-90 ml-2">
-                      (GPA: {semester.gpa.toFixed(2)})
-                    </span>
-                  </div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeSemester(semester.id);
-                    }}
-                    className={`p-1 rounded-lg transition ${selectedSemester === semester.id
-                      ? 'hover:bg-white/20 text-white'
-                      : 'hover:bg-gray-200 text-gray-500'
-                      }`}
+                    className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition
+          ${selectedSemester === semester.id
+                        ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white"
+                        : "hover:bg-gray-100"}
+        `}
                   >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </Link>
-            ))}
+                    <div>
+                      <span className="font-medium">{semester.name}</span>
+                      <span className="text-sm opacity-90 ml-2">
+                        (GPA: {semester.gpa.toFixed(2)})
+                      </span>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeSemester(semester.id);
+                      }}
+                      className={`p-1 rounded-lg transition ${selectedSemester === semester.id
+                        ? "hover:bg-white/20 text-white"
+                        : "hover:bg-gray-200 text-gray-500"
+                        }`}
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                );
+
+                return pathname !== "/" ? (
+                  <Link key={semester.id} href="/" onClick={() => {
+                    setSelectedSemesterFunc(semester.id);
+                    toggleSidebar();
+                  }}>
+                    {semesterContent}
+                  </Link>
+                ) : (
+                  <div key={semester.id} onClick={() => {
+                    setSelectedSemesterFunc(semester.id);
+                    toggleSidebar();
+                  }}>{semesterContent}</div>
+                );
+              })
+            ) : (
+              <button
+                onClick={addSemester}
+                disabled={semesters.length >= 8}
+                className="flex items-center gap-2 w-full justify-center bg-gradient-to-r from-indigo-600 to-violet-600 text-white p-3 rounded-lg hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              >
+                <PlusCircle size={20} />
+                Add Semester
+              </button>
+            )}
           </div>
         </div>
       </div>
 
       {/* Fixed Footer Section */}
       <div className="p-6 border-t border-gray-100">
-        {semesters.length < 8 && (
+        {semesters.length > 0 && semesters.length < 8 && (
           <button
             onClick={addSemester}
             disabled={semesters.length >= 8}

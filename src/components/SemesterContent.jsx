@@ -3,7 +3,7 @@ import { PlusCircle, Trash2 } from 'lucide-react';
 import { GpaDataContext } from '@/context/GpaDataContext';
 
 const SemesterContent = () => {
-  const { semesters, selectedSemester, updateSemesterGPA, updateSemesterCourses } = useContext(GpaDataContext)
+  const { semesters, selectedSemester, updateSemesterGPA, updateSemesterCourses, isSidebarOpen, toggleSidebar } = useContext(GpaDataContext)
   const semester = semesters.find(sem => sem.id === selectedSemester)
 
   const addCourse = () => {
@@ -75,7 +75,7 @@ const SemesterContent = () => {
   }, [semester, updateSemesterGPA, calculateGPA]);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 max-w-3xl mx-auto">
+    <div className="bg-white rounded-xl shadow-lg p-6 max-w-3xl mx-auto" onClick={() => { if (isSidebarOpen) toggleSidebar() }}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-transparent bg-clip-text">
           {semester?.name}

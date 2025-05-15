@@ -29,6 +29,7 @@ const Sidebar = () => {
         </div>
 
         <Link
+          onClick={toggleSidebar}
           href="/gpa-table"
           className="flex items-center gap-2 w-full bg-indigo-50 text-indigo-600 p-3 rounded-lg hover:bg-indigo-100 transition font-medium"
         >
@@ -46,6 +47,7 @@ const Sidebar = () => {
 
             {semesters.map((semester) => (
               <Link
+                onClick={toggleSidebar}
                 key={semester.id}
                 href="/"
               >
